@@ -1907,6 +1907,15 @@ textarea.message-input {
   color: #0056b3;
 }
 
+.trending-link {
+  text-decoration: none;
+  color: #007BFF;
+}
+
+.trending-link:hover {
+  color: #0056b3;
+}
+
 .tag-link {
   text-decoration: none;
   color: #007BFF;

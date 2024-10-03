@@ -15,35 +15,86 @@
             <h1>Edit Profile</h1>
             <form method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
+
+                <!-- Non-field errors -->
+                {% if form.non_field_errors %}
+                    <div class="alert-error">
+                        {% for error in form.non_field_errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
                 
                 <!-- Name Field -->
                 <div class="form-group">
-                    {{ form.name|as_crispy_field }}
+                    {{ form.name }}
+                    {% if form.name.errors %}
+                        <div class="alert-error">
+                            {% for error in form.name.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                 </div>
 
                 <!-- Bio Field -->
                 <div class="form-group">
-                    {{ form.bio|as_crispy_field }}
+                    {{ form.bio }}
+                    {% if form.bio.errors %}
+                        <div class="alert-error">
+                            {% for error in form.bio.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                 </div>
 
                 <!-- Birth Date Field -->
                 <div class="form-group">
-                    {{ form.birth_date|as_crispy_field }}
+                    {{ form.birth_date }}
+                    {% if form.birth_date.errors %}
+                        <div class="alert-error">
+                            {% for error in form.birth_date.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                 </div>
 
                 <!-- Location Field -->
                 <div class="form-group">
-                    {{ form.location|as_crispy_field }}
+                    {{ form.location }}
+                    {% if form.location.errors %}
+                        <div class="alert-error">
+                            {% for error in form.location.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                 </div>
 
                 <!-- Profile Picture Field -->
                 <div class="form-group">
-                    {{ form.picture|as_crispy_field }}
+                    {{ form.picture }}
+                    {% if form.picture.errors %}
+                        <div class="alert-error">
+                            {% for error in form.picture.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                 </div>
 
                 <!-- Banner Field -->
                 <div class="form-group">
-                    {{ form.banner|as_crispy_field }}
+                    {{ form.banner }}
+                    {% if form.banner.errors %}
+                        <div class="alert-error">
+                            {% for error in form.banner.errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                 </div>
 
                 <!-- Save Changes Button -->

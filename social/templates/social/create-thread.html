@@ -7,14 +7,14 @@
             <div class="messages-container">
                 <ul class="messages-list">
                     {% for message in messages %}
-                        <li class="message {{ message.tags }}">
-                            <span class="message-icon">
-                                {% if message.tags == 'error' %}
+                        {% if message.tags == 'error' %}
+                            <li class="message {{ message.tags }}">
+                                <span class="message-icon">
                                     <span class="white-cross"><i class="fa fa-times"></i></span>
-                                {% endif %}
-                            </span>
-                            <span class="message-text">{{ message }}</span>
-                        </li>
+                                </span>
+                                <span class="message-text">{{ message }}</span>
+                            </li>
+                        {% endif %}
                     {% endfor %}
                 </ul>
             </div>
