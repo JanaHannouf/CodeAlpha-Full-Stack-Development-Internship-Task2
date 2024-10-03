@@ -6,11 +6,19 @@
     <section id="user-profile">
         <div class="profile-wrapper">
             <div class="profile-banner">
-                <img src="{{ profile.banner.url }}" alt="Profile Banner" class="banner-img">
+                {% if profile.banner %}
+                    <img src="{{ profile.banner.url }}" alt="Profile Banner" class="banner-img">
+                {% else %}
+                    <img src="{% static 'asset/images/banner.webp' %}" alt="Profile Banner" class="banner-img">
+                {% endif %}
             </div>
             <div class="profile-details">
                 <div class="profile-img-container">
-                    <img src="{{ profile.picture.url }}" alt="Profile Picture" class="profile-img">
+                    {% if profile.picture %}
+                        <img src="{{ profile.picture.url }}" alt="Profile Picture" class="profile-img">
+                    {% else %}
+                        <img src="{% static 'asset/images/profile.jpg' %}" alt="Profile Picture" class="profile-img">
+                    {% endif %}
                 </div>
                 <div class="profile-info">
                     {% if profile.name %}

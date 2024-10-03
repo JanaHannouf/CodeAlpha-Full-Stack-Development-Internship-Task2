@@ -212,7 +212,11 @@
                 {% for profile in profiles %}
                     {% if profile.user != request.user %}
                         <div class="user-suggestion">
-                            <img src="{{ profile.picture.url }}" alt="User" class="suggested-user-img">
+                            {% if profile.picture %}
+                                <img src="{{ profile.picture.url }}" alt="User" class="suggested-user-img">
+                            {% else %}
+                                <img src="{% static 'asset/images/profile.jpg' %}" alt="User" class="suggested-user-img">
+                            {% endif %}
                             <a href="{% url 'profile' profile.pk %}"> <strong>@{{ profile.user.username }}</strong> </a>
                         </div>
                         <hr>

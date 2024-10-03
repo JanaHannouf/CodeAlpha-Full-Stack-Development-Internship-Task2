@@ -15,7 +15,11 @@
                 <div class="follower-card">
                     <a href="{% url 'profile' user.profile.pk %}">
                         <div class="follower-info">
-                            <img src="{{ user.profile.picture.url }}" alt="Profile Picture" class="follower-img">
+                            {% if user.profile.picture %}
+                                <img src="{{ user.profile.picture.url }}" alt="Profile Picture" class="follower-img">
+                            {% else %}
+                                <img src="{% static 'asset/images/profile.jpg' %}" alt="Profile Picture" class="follower-img">
+                            {% endif %}
                             <div class="follower-details">
                                 <h3 class="follower-name">{{ user.profile.name|default:user.username }}</h3>
                                 <p class="follower-bio">{{ user.profile.bio|default:"No bio available" }}</p>
