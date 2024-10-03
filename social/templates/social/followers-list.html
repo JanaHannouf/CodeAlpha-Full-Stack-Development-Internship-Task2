@@ -1,0 +1,35 @@
+{% extends 'social/base.html' %}
+{% load static %}
+{% block content %}
+    <!-- Back to Profile Button -->
+    <div>
+        <a href="{% url 'profile' user.profile.pk%}" class="back-to-feed-btn">
+            ← Back to Profile
+        </a>
+    </div>
+
+    <section id="followers-list">
+        {% if profile.name %}
+            <h2 class="followers-title">Followers for {{ profile.name }}</h2>
+        {% else %}
+            <h2 class="followers-title">Followers for @{{ profile.user.username }}</h2>
+        {% endif %}
+        <div class="followers-container">
+            {% for follower in followers %}
+                <div class="follower-card">
+                    <a href="{% url 'profile' follower.profile.pk %}">
+                        <div class="follower-info">
+                            <img src="{{ follower.profile.picture.url }}" alt="Profile Picture" class="follower-img">
+                            <div class="follower-details">
+                                <h3 class="follower-name">{{ follower.profile.name|default:follower.username }}</h3>
+                                <p class="follower-bio">{{ follower.profile.bio|default:"No bio available" }}</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            {% empty %}
+                <p class="red">No followers found.</p>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock content %}
