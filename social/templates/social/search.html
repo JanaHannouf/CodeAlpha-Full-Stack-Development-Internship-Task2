@@ -38,8 +38,12 @@
                     </div>
                 </a>
             {% endfor %}
+            {% else %}
+                <h2 class="profile-title">Explore Users</h2>
+                <p class="red"> No user found. </p>
+            {% endif %}
         <!-- Posts Section -->
-        {% elif post_list %}
+        {% if post_list %}
             {% if tag %}
                 <h2 class="profile-title">Explore <a href="#" class="tag-link"> #{{ tag.name }} </a> Posts</h2>
             {% endif %}

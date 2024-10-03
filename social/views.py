@@ -350,17 +350,20 @@ class PostEditView(LoginRequiredMixin, UserPassesTestMixin, View):
             existing_images = post.image.all()  # Retrieve existing images
             files = request.FILES.getlist('images')  # Get new uploaded images
 
-            # Clear existing images if needed, or you can keep them based on your requirements
-            for img in existing_images:
-                img.delete()  
+            # Only delete images if there are new ones uploaded
+            if files:
+                for img in existing_images:
+                    img.delete()  # Delete existing images if new ones are uploaded
 
-            # Loop through uploaded files and save them
-            for f in files:
-                img_instance = PostImages(image=f)
-                img_instance.save()  # Save the image instance to the database
-                
-                # Add the PostImages instance to the ManyToMany field of the Post
-                updated_post.image.add(img_instance)
+                # Loop through uploaded files and save them
+                for f in files:
+                    img_instance = PostImages(image=f)
+                    img_instance.save()  # Save the image instance to the database
+                    
+                    # Add the PostImages instance to the ManyToMany field of the Post
+                    updated_post.image.add(img_instance)
+
+            # If no new images were uploaded, existing ones remain intact
 
             return redirect('manage-post')  # Redirect after successfully updating
 
@@ -860,11 +863,28 @@ class CreateMessage(View):
         form = MessageForm(request.POST, request.FILES)
         thread = ThreadModel.objects.get(pk=pk)
 
+        # Determine the receiver of the message
         if thread.receiver == request.user:
             receiver = thread.user
         else:
             receiver = thread.receiver
 
+        receiver_profile = UserProfile.objects.get(user=receiver)
+
+        # Get the message permission of the receiver
+        message_permission = receiver_profile.who_can_send_message
+
+        # Check if the current user is allowed to send a message
+        if message_permission == 2:  # Only followers can send messages
+            if not receiver_profile.followers.filter(id=request.user.id).exists():
+                messages.error(request, "You must follow this user to send a message.")
+                return redirect('inbox')  # Redirect to inbox with error
+
+        elif message_permission == 3:  # Nobody can send messages
+            messages.error(request, "This user doesn't accept messages from anyone.")
+            return redirect('inbox')  # Redirect to inbox with error
+
+        # If the user has permission and the form is valid, proceed to send the message
         if form.is_valid():
             message = form.save(commit=False)
             message.thread = thread
@@ -872,11 +892,11 @@ class CreateMessage(View):
             message.receiver_user = receiver
             message.save()
 
-        notification = Notification.objects.create(
-            notification_type = 4,
-            from_user = request.user,
-            to_user = receiver,
-            thread = thread,
-        )
+            notification = Notification.objects.create(
+                notification_type=4,
+                from_user=request.user,
+                to_user=receiver,
+                thread=thread,
+            )
 
         return redirect('thread', pk=pk)
