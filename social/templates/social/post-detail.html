@@ -158,6 +158,12 @@
                             </div>
                         </div>
                     </div>
+
+                    <form method="post" class="reply-form" id="{{ comment.pk }}" style="display: none;" action="{% url 'comment-reply' post.pk comment.pk %}">
+                        {% csrf_token %}
+                        {{ form.comment }}
+                        <button type="submit" class="reply-button">Post</button>
+                    </form>
                     
                     <!-- Display Replies -->
                     <div class="reply-section">
@@ -213,14 +219,14 @@
                                     </div>
                                 </div>
                             </div>
+                            
+                            <form method="post" class="reply-form" id="{{ child_comment.pk }}" style="display: none;" action="{% url 'comment-reply' post.pk comment.pk %}">
+                                {% csrf_token %}
+                                {{ form.comment }}
+                                <button type="submit" class="reply-button">Post</button>
+                            </form>
                         {% endfor %}
                     </div>
-
-                    <form method="post" class="reply-form" id="{{ comment.pk }}" style="display: none;" action="{% url 'comment-reply' post.pk comment.pk %}">
-                        {% csrf_token %}
-                        {{ form.comment }}
-                        <button type="submit" class="reply-button">Post</button>
-                    </form>
                 {% endif %}
             {% endfor %}
 
